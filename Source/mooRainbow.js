@@ -71,8 +71,8 @@ var MooRainbow = new Class({
 		this.layout = new Element('div#'+id+'[style="display:block;position:absolute;z-index:'+(this.options.zIndex - 1)+'"]').inject(document.body);
 		var box = new Element('div.'+prefix+'box[style="position:relative"]').inject(this.layout);
 		var div = new Element('div.'+prefix+'overlayBox[style="position:absolute;overflow:hidden"]').inject(box);
-		var ar = new Element('div.'+prefix+'arrows[style="position:absolute;z-index:'+(this.options.zIndex - 1)+'"]').inject(box);
 
+		var ar = new Element('div.'+prefix+'arrows[style="position:absolute;z-index:'+(this.options.zIndex - 1)+'"]').inject(box);
 		ar.width = ar.getStyle('width').toInt();
 		ar.height = ar.getStyle('height').toInt();
 
@@ -83,10 +83,10 @@ var MooRainbow = new Class({
 			div.setStyle('overflow', '');
 			var src = ov.src;
 			ov.src = this.options.imgPath + 'blank.gif';
-			ov.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + src + "', sizingMethod='scale')";
+			ov.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='"+src+"', sizingMethod='scale')";
 			src = ov2.src;
 			ov2.src = this.options.imgPath + 'blank.gif';
-			ov2.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + src + "', sizingMethod='scale')";
+			ov2.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='"+src+"', sizingMethod='scale')";
 		}
 		ov.width = ov2.width = div.getStyle('width').toInt();
 		ov.height = ov2.height = div.getStyle('height').toInt();
@@ -96,7 +96,7 @@ var MooRainbow = new Class({
 		cr.height = cr.getStyle('height').toInt();
 
 		var sl = new Element('img.'+prefix+'slider[src="'+this.options.imgPath+'moor_slider.png"][style="position:absolute;z-index:'+this.options.zIndex+'"]').inject(box);
-		this.layout.slider = Slick.find(document, '#' + idPrefix + 'slider');
+		this.layout.slider = Slick.find(document, '#'+idPrefix+'slider');
 		sl.width = sl.getStyle('width').toInt();
 		sl.height = sl.getStyle('height').toInt();
 
@@ -131,7 +131,7 @@ var MooRainbow = new Class({
 
 		this.rePosition();
 
-		var overlays = $$('#' + idPrefix + 'overlay');
+		var overlays = $$('#'+idPrefix+'overlay');
 		this.layout.overlay = overlays[0];
 		this.layout.overlay2 = overlays[1];
 		this.layout.cursor = Slick.find(document, '#'+idPrefix+'cursor');

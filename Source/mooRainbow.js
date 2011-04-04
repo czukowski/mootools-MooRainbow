@@ -44,27 +44,30 @@ var MooRainbow = new Class({
 		this.sets = {
 			rgb: [],
 			hsb: [],
-			hex: []	
+			hex: []
 		};
-		this.pickerClick = this.sliderClick  = false;
-		if (!this.layout) this.doLayout();
+		this.pickerClick = this.sliderClick = false;
+		if ( ! this.layout)
+			this.doLayout();
 		this.OverlayEvents();
 		this.sliderEvents();
 		this.backupEvent();
 		if (this.options.wheel) this.wheelEvents();
-		this.element.addEvent('click', function(e) { this.toggle(e); }.bind(this));
+		this.element.addEvent('click', function(e) {
+			this.toggle(e);
+		}.bind(this));
 
 		this.layout.overlay.setStyle('background-color', this.options.startColor.rgbToHex());
 		this.layout.backup.setStyle('background-color', this.backupColor.rgbToHex());
 
-		this.pickerPos.x = this.snippet('curPos').l + this.snippet('curSize', 'int').w;
-		this.pickerPos.y = this.snippet('curPos').t + this.snippet('curSize', 'int').h;
+		this.pickerPos.x = this.snippet('curPos').l+this.snippet('curSize', 'int').w;
+		this.pickerPos.y = this.snippet('curPos').t+this.snippet('curSize', 'int').h;
 
 		this.manualSet(this.options.startColor);
 
-		this.pickerPos.x = this.snippet('curPos').l + this.snippet('curSize', 'int').w;
-		this.pickerPos.y = this.snippet('curPos').t + this.snippet('curSize', 'int').h;
-		this.sliderPos = this.snippet('arrPos') - this.snippet('arrSize', 'int');
+		this.pickerPos.x = this.snippet('curPos').l+this.snippet('curSize', 'int').w;
+		this.pickerPos.y = this.snippet('curPos').t+this.snippet('curSize', 'int').h;
+		this.sliderPos = this.snippet('arrPos')-this.snippet('arrSize', 'int');
 
 		if (window.khtml) this.hide();
 	},
@@ -90,9 +93,21 @@ var MooRainbow = new Class({
 		if (!type || (type != 'hsb' && type != 'hex')) type = 'rgb';
 		var rgb, hsb, hex;
 
-		if (type == 'rgb') { rgb = color; hsb = color.rgbToHsb(); hex = color.rgbToHex(); } 
-		else if (type == 'hsb') { hsb = color; rgb = color.hsbToRgb(); hex = rgb.rgbToHex(); }
-		else { hex = color; rgb = color.hexToRgb(true); hsb = rgb.rgbToHsb(); }
+		if (type == 'rgb') {
+			rgb = color;
+			hsb = color.rgbToHsb();
+			hex = color.rgbToHex();
+		}
+		else if (type == 'hsb') {
+			hsb = color;
+			rgb = color.hsbToRgb();
+			hex = rgb.rgbToHex();
+		}
+		else {
+			hex = color;
+			rgb = color.hexToRgb(true);
+			hsb = rgb.rgbToHsb();
+		}
 
 		this.setMooRainbow(rgb);
 		this.autoSet(hsb);
@@ -108,7 +123,7 @@ var MooRainbow = new Class({
 		var hue;
 
 		var posx = Math.round(((oveW * hsb[1]) / 100) - curW);
-		var posy = Math.round(- ((oveH * hsb[2]) / 100) + oveH - curH);
+		var posy = Math.round(-((oveH * hsb[2]) / 100) + oveH - curH);
 
 		var c = Math.round(((sliH * hsb[0]) / 360)); c = (c == 360) ? 0 : c;
 		var position = sliH - c + this.snippet('slider') - arwH;
@@ -123,12 +138,24 @@ var MooRainbow = new Class({
 	},
 
 	setMooRainbow: function(color, type) {
-		if (!type || (type != 'hsb' && type != 'hex')) type = 'rgb';
+		if ( ! type || (type != 'hsb' && type != 'hex')) type = 'rgb';
 		var rgb, hsb, hex;
 
-		if (type == 'rgb') { rgb = color; hsb = color.rgbToHsb(); hex = color.rgbToHex(); } 
-		else if (type == 'hsb') { hsb = color; rgb = color.hsbToRgb(); hex = rgb.rgbToHex(); }
-		else { hex = color; rgb = color.hexToRgb(); hsb = rgb.rgbToHsb(); }
+		if (type == 'rgb') {
+			rgb = color;
+			hsb = color.rgbToHsb();
+			hex = color.rgbToHex();
+		}
+		else if (type == 'hsb') {
+			hsb = color;
+			rgb = color.hsbToRgb();
+			hex = rgb.rgbToHex();
+		}
+		else {
+			hex = color;
+			rgb = color.hexToRgb();
+			hsb = rgb.rgbToHsb();
+		}
 
 		this.sets = {
 			rgb: rgb,
@@ -136,7 +163,7 @@ var MooRainbow = new Class({
 			hex: hex
 		};
 
-		if (!this.pickerPos.x)
+		if ( ! this.pickerPos.x)
 			this.autoSet(hsb);
 
 		this.RedInput.value = rgb[0];
@@ -173,7 +200,8 @@ var MooRainbow = new Class({
 		inputs = Array.clone(this.arrRGB).concat(this.arrHSB, this.hexInput);
 
 		document.addEvent('click', function() { 
-			if(this.visible) this.hide(this.layout); 
+			if (this.visible)
+				this.hide(this.layout);
 		}.bind(this));
 
 		inputs.each(function(el) {
@@ -185,7 +213,8 @@ var MooRainbow = new Class({
 				'click': function(e) { new Event(e).stop(); },
 				'keyup': function(e) {
 					e = new Event(e);
-					if(e.key == 'esc' && this.visible) this.hide(this.layout);
+					if (e.key == 'esc' && this.visible)
+						this.hide(this.layout);
 				}.bind(this)
 			}, this);
 		}, this);
@@ -233,7 +262,7 @@ var MooRainbow = new Class({
 		this.pickerPos.y = this.snippet('curPos').t + curH;
 
 		this.setMooRainbow(this.parseColors(this.pickerPos.x, this.pickerPos.y, this.sliderPos), 'hsb');
-		this.fireEvent('onChange', [this.sets, this]);
+		this.fireEvent('change', [this.sets, this]);
 	},
 
 	sliderEvents: function() {
@@ -296,67 +325,79 @@ var MooRainbow = new Class({
 
 	eventKeys: function(e, el, id) {
 		var wheel, type;		
-		id = (!id) ? el.id : this.arrHSB[0];
+		id = ( ! id) ? el.id : this.arrHSB[0];
 
 		if (e.type == 'keydown') {
-			if (e.key == 'up') wheel = 1;
-			else if (e.key == 'down') wheel = -1;
+			if (e.key == 'up') {
+				wheel = 1;
+			}
+			else if (e.key == 'down') {
+				wheel = -1;
+			}
 			else return;
-		} else if (e.type == Element.Events.mousewheel.type) wheel = (e.wheel > 0) ? 1 : -1;
+		}
+		else if (e.type == Element.Events.mousewheel.type) {
+			wheel = (e.wheel > 0) ? 1 : -1;
+		}
 
-		if (this.arrRGB.test(el)) type = 'rgb';
-		else if (this.arrHSB.test(el)) type = 'hsb';
-		else type = 'hsb';
+		if (this.arrRGB.test(el)) {
+			type = 'rgb';
+		}
+		else if (this.arrHSB.test(el)) {
+			type = 'hsb';
+		}
+		else {
+			type = 'hsb';
+		}
 
+		var rgb = this.sets.rgb, hsb = this.sets.hsb, prefix = this.options.prefix, pass;
+		var value = el.value.toInt() + wheel;
 		if (type == 'rgb') {
-			var rgb = this.sets.rgb, hsb = this.sets.hsb, prefix = this.options.prefix, pass;
-			var value = el.value.toInt() + wheel;
 			value = (value > 255) ? 255 : (value < 0) ? 0 : value;
 
 			switch(el.className) {
-				case prefix + 'rInput': pass = [value, rgb[1], rgb[2]];	break;
-				case prefix + 'gInput': pass = [rgb[0], value, rgb[2]];	break;
-				case prefix + 'bInput':	pass = [rgb[0], rgb[1], value];	break;
-				default : pass = rgb;
+				case prefix+'rInput': pass = [value, rgb[1], rgb[2]]; break;
+				case prefix+'gInput': pass = [rgb[0], value, rgb[2]]; break;
+				case prefix+'bInput': pass = [rgb[0], rgb[1], value]; break;
+				default: pass = rgb;
 			}
 			this.manualSet(pass);
-			this.fireEvent('onChange', [this.sets, this]);
+			this.fireEvent('change', [this.sets, this]);
 		} else {
-			var rgb = this.sets.rgb, hsb = this.sets.hsb, prefix = this.options.prefix, pass;
-			var value = el.value.toInt() + wheel;
-
 			if (el.className.test(/(HueInput)/)) value = (value > 359) ? 0 : (value < 0) ? 0 : value;
 			else value = (value > 100) ? 100 : (value < 0) ? 0 : value;
 
 			switch(el.className) {
-				case prefix + 'HueInput': pass = [value, hsb[1], hsb[2]]; break;
-				case prefix + 'SatuInput': pass = [hsb[0], value, hsb[2]]; break;
-				case prefix + 'BrighInput':	pass = [hsb[0], hsb[1], value]; break;
-				default : pass = hsb;
+				case prefix+'HueInput': pass = [value, hsb[1], hsb[2]]; break;
+				case prefix+'SatuInput': pass = [hsb[0], value, hsb[2]]; break;
+				case prefix+'BrighInput': pass = [hsb[0], hsb[1], value]; break;
+				default: pass = hsb;
 			}
 			this.manualSet(pass, 'hsb');
-			this.fireEvent('onChange', [this.sets, this]);
+			this.fireEvent('change', [this.sets, this]);
 		}
 		e.stop();
 	},
 
 	eventKeydown: function(e, el) {
 		var n = e.code, k = e.key;
-
-		if 	((!el.className.test(/hexInput/) && !(n >= 48 && n <= 57)) &&
-			(k!='backspace' && k!='tab' && k !='delete' && k!='left' && k!='right'))
-		e.stop();
+		if 	(( ! el.className.test(/hexInput/) && ! (n >= 48 && n <= 57)) &&
+			(k != 'backspace' && k != 'tab' && k != 'delete' && k != 'left' && k != 'right')
+		) {
+			e.stop();
+		}
 	},
 
 	eventKeyup: function(e, el) {
 		var n = e.code, k = e.key, pass, prefix, chr = el.value.charAt(0);
 
-		if (!!!(el.value || el.value === 0)) return;
+		if ( !!! (el.value || el.value === 0)) return;
 		if (el.className.test(/hexInput/)) {
 			if (chr != "#" && el.value.length != 6) return;
 			if (chr == '#' && el.value.length != 7) return;
 		} else {
-			if (!(n >= 48 && n <= 57) && (!['backspace', 'tab', 'delete', 'left', 'right'].test(k)) && el.value.length > 3) return;
+			if ( ! (n >= 48 && n <= 57) && ( ! ['backspace', 'tab', 'delete', 'left', 'right'].test(k)) && el.value.length > 3)
+				return;
 		}
 
 		prefix = this.options.prefix;
@@ -364,15 +405,15 @@ var MooRainbow = new Class({
 		if (el.className.test(/(rInput|gInput|bInput)/)) {
 			if (el.value  < 0 || el.value > 255) return;
 			switch(el.className){
-				case prefix + 'rInput': pass = [el.value, this.sets.rgb[1], this.sets.rgb[2]]; break;
-				case prefix + 'gInput': pass = [this.sets.rgb[0], el.value, this.sets.rgb[2]]; break;
-				case prefix + 'bInput': pass = [this.sets.rgb[0], this.sets.rgb[1], el.value]; break;
+				case prefix+'rInput': pass = [el.value, this.sets.rgb[1], this.sets.rgb[2]]; break;
+				case prefix+'gInput': pass = [this.sets.rgb[0], el.value, this.sets.rgb[2]]; break;
+				case prefix+'bInput': pass = [this.sets.rgb[0], this.sets.rgb[1], el.value]; break;
 				default : pass = this.sets.rgb;
 			}
 			this.manualSet(pass);
-			this.fireEvent('onChange', [this.sets, this]);
+			this.fireEvent('change', [this.sets, this]);
 		}
-		else if (!el.className.test(/hexInput/)) {
+		else if ( ! el.className.test(/hexInput/)) {
 			if (el.className.test(/HueInput/) && el.value  < 0 || el.value > 360) return;
 			else if (el.className.test(/HueInput/) && el.value == 360) el.value = 0;
 			else if (el.className.test(/(SatuInput|BrighInput)/) && el.value  < 0 || el.value > 100) return;
@@ -383,21 +424,21 @@ var MooRainbow = new Class({
 				default : pass = this.sets.hsb;
 			}
 			this.manualSet(pass, 'hsb');
-			this.fireEvent('onChange', [this.sets, this]);
+			this.fireEvent('change', [this.sets, this]);
 		} else {
 			pass = el.value.hexToRgb(true);
-			if (isNaN(pass[0])||isNaN(pass[1])||isNaN(pass[2])) return;
+			if (isNaN(pass[0]) || isNaN(pass[1]) || isNaN(pass[2])) return;
 
-			if (!!(pass || pass === 0)) {
+			if ( !! (pass || pass === 0)) {
 				this.manualSet(pass);
-				this.fireEvent('onChange', [this.sets, this]);
+				this.fireEvent('change', [this.sets, this]);
 			}
 		}
 	},
 
 	doLayout: function() {
 		var id = this.options.id, prefix = this.options.prefix;
-		var idPrefix = id + ' .' + prefix;
+		var idPrefix = id+' .'+prefix;
 
 		this.layout = new Element('div#'+id+'[style="display:block;position:absolute;z-index:'+(this.options.zIndex - 1)+'"]').inject(document.body);
 		var box = new Element('div.'+prefix+'box[style="position:relative"]').inject(this.layout);
@@ -465,25 +506,25 @@ var MooRainbow = new Class({
 		var overlays = $$('#' + idPrefix + 'overlay');
 		this.layout.overlay = overlays[0];
 		this.layout.overlay2 = overlays[1];
-		this.layout.cursor = Slick.find(document, '#' + idPrefix + 'cursor');
-		this.layout.arrows = Slick.find(document, '#' + idPrefix + 'arrows');
-		this.chooseColor = Slick.find(document, '#' + idPrefix + 'chooseColor');
-		this.layout.backup = Slick.find(document, '#' + idPrefix + 'currentColor');
-		this.RedInput = Slick.find(document, '#' + idPrefix + 'rInput');
-		this.GreenInput = Slick.find(document, '#' + idPrefix + 'gInput');
-		this.BlueInput = Slick.find(document, '#' + idPrefix + 'bInput');
-		this.HueInput = Slick.find(document, '#' + idPrefix + 'HueInput');
-		this.SatuInput = Slick.find(document, '#' + idPrefix + 'SatuInput');
-		this.BrighInput = Slick.find(document, '#' + idPrefix + 'BrighInput');
-		this.hexInput = Slick.find(document, '#' + idPrefix + 'hexInput');
+		this.layout.cursor = Slick.find(document, '#'+idPrefix+'cursor');
+		this.layout.arrows = Slick.find(document, '#'+idPrefix+'arrows');
+		this.chooseColor = Slick.find(document, '#'+idPrefix+'chooseColor');
+		this.layout.backup = Slick.find(document, '#'+idPrefix+'currentColor');
+		this.RedInput = Slick.find(document, '#'+idPrefix+'rInput');
+		this.GreenInput = Slick.find(document, '#'+idPrefix+'gInput');
+		this.BlueInput = Slick.find(document, '#'+idPrefix+'bInput');
+		this.HueInput = Slick.find(document, '#'+idPrefix+'HueInput');
+		this.SatuInput = Slick.find(document, '#'+idPrefix+'SatuInput');
+		this.BrighInput = Slick.find(document, '#'+idPrefix+'BrighInput');
+		this.hexInput = Slick.find(document, '#'+idPrefix+'hexInput');
 
 		this.arrRGB = [this.RedInput, this.GreenInput, this.BlueInput];
 		this.arrHSB = [this.HueInput, this.SatuInput, this.BrighInput];
-		this.okButton = Slick.find(document, '#' + idPrefix + 'okButton');
+		this.okButton = Slick.find(document, '#'+idPrefix+'okButton');
 
-		this.layout.cursor.setStyle('background-image', 'url(' + this.options.imgPath + 'moor_cursor.gif)');
+		this.layout.cursor.setStyle('background-image', 'url('+this.options.imgPath+'moor_cursor.gif)');
 
-		if (!window.khtml) this.hide();
+		if ( ! window.khtml) this.hide();
 	},
 
 	rePosition: function() {
@@ -493,7 +534,7 @@ var MooRainbow = new Class({
 			'top': coords.top + this.options.offset.y
 		});
 	},
-	
+
 	snippet: function(mode, type) {
 		var size; type = (type) ? type : 'none';
 

@@ -155,7 +155,7 @@ var MooRainbow = new Class({
 		if ( ! window.khtml) this.hide();
 	},
 
-	eventKeydown: function(e, el) {
+	eventKeydown: function(el, e) {
 		var n = e.code, k = e.key;
 		if 	(( ! el.className.test(/hexInput/) && ! (n >= 48 && n <= 57)) &&
 			(k != 'backspace' && k != 'tab' && k != 'delete' && k != 'left' && k != 'right')
@@ -164,7 +164,7 @@ var MooRainbow = new Class({
 		}
 	},
 
-	eventKeys: function(e, el, id) {
+	eventKeys: function(el, id, e) {
 		var wheel, type;
 		id = ( ! id) ? el.id : this.arrHSB[0];
 
@@ -220,7 +220,7 @@ var MooRainbow = new Class({
 		e.stop();
 	},
 
-	eventKeyup: function(e, el) {
+	eventKeyup: function(el, e) {
 		var n = e.code, k = e.key, pass, prefix, chr = el.value.charAt(0);
 
 		if ( !!! (el.value || el.value === 0)) return;
@@ -228,7 +228,7 @@ var MooRainbow = new Class({
 			if (chr != "#" && el.value.length != 6) return;
 			if (chr == '#' && el.value.length != 7) return;
 		} else {
-			if ( ! (n >= 48 && n <= 57) && ( ! ['backspace', 'tab', 'delete', 'left', 'right'].test(k)) && el.value.length > 3)
+			if ( ! (n >= 48 && n <= 57) && ( ! ['backspace', 'tab', 'delete', 'left', 'right'].contains(k)) && el.value.length > 3)
 				return;
 		}
 
@@ -359,8 +359,8 @@ var MooRainbow = new Class({
 		}.bind(this));
 
 		inputs.each(function(el) {
-			el.addEvent('keydown', this.eventKeydown.bind(this, [el]));
-			el.addEvent('keyup', this.eventKeyup.bind(this, [el]));
+			el.addEvent('keydown', this.eventKeydown.bind(this, el));
+			el.addEvent('keyup', this.eventKeyup.bind(this, el));
 		}, this);
 		[this.element, this.layout].each(function(el) {
 			el.addEvents({
@@ -554,8 +554,8 @@ var MooRainbow = new Class({
 
 		arrColors.each(function(el) {
 			el.addEvents({
-				'mousewheel': this.eventKeys.bind(this, [el]),
-				'keydown': this.eventKeys.bind(this, [el])
+				'mousewheel': this.eventKeys.bind(this, el),
+				'keydown': this.eventKeys.bind(this, el)
 			});
 		}, this);
 
